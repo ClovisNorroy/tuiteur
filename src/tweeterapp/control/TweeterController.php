@@ -46,7 +46,7 @@ class TweeterController extends \mf\control\AbstractController {
 
         foreach ($tuits as $tuit){
             $author = User::where('id', '=', $tuit['author'])->first();
-            $tuit['author'] = $author['username'];
+            $tuit['authorNickName'] = $author['username'];
             $alltuits[] = $tuit;
         }
         $vue = new \tweeterapp\view\TweeterView($alltuits);
@@ -103,10 +103,9 @@ class TweeterController extends \mf\control\AbstractController {
     
     public function viewUserTweets(){
         if(isset($_GET["id"])){
-            $author = User::select()->where('id', '=', $_GET["id"]);
-            $tweets = $_GET["id"]->tweets()->get();
+            $tweets = Tweet::select()->where('author', '=', $_GET["id"])->get();
             $tweetView = new TweeterView($tweets);
-            echo $tweetView->render("userTweet");
+            $tweetView->render("userTweet");
         }
         /*
          *

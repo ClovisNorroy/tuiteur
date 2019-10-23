@@ -43,9 +43,9 @@ class TweeterView extends \mf\view\AbstractView {
         $homeHTML="";
         foreach($this->data as $tweet){
             $text = $tweet['text'];
-            $author = $tweet['author'];
+            $author = $tweet['authorNickName'];
             $tweetLink = $router->urlFor("/tweet", ['id'=> $tweet['id']]) ;
-            $authorLink = $router->urlFor("/author", ['id' => $tweet['id']]) ;
+            $authorLink = $router->urlFor("/author", ['id' => $tweet['author']]) ;
             $homeHTML.= <<<EOT
             <div class = "tweet">
             <div class="tweet-text"><a href="$tweetLink">$text</a></div>
@@ -124,6 +124,11 @@ EOT;
      *
      */
     protected function renderPostTweet(){
+
+        return <<<EOT
+        <form>
+EOT;
+
         
         /* Méthode renderPostTweet
          *
