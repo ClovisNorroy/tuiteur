@@ -30,6 +30,8 @@ $router->setDefaultRoute('/home/');
 $router->addRoute('home', '/home', '\tweeterapp\control\TweeterController', 'viewHome');
 $router->addRoute('singletweet', '/tweet', '\tweeterapp\control\TweeterController', 'viewTweet');
 $router->addRoute("author", '/author', '\tweeterapp\control\TweeterController', 'viewUserTweets');
+$router->addRoute("post", "/post", '\tweeterapp\control\TweeterController', 'postTweet' );
+$router->addroute("send", "/send", '\tweeterapp\control\TweeterController', 'sendTweet');
 $router->setDefaultRoute('/home/');
 
 $router->run();

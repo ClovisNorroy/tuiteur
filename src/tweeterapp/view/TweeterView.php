@@ -126,7 +126,12 @@ EOT;
     protected function renderPostTweet(){
 
         return <<<EOT
-        <form>
+        <form action ="">
+	<textarea cols="30" rows="2">Enter Tweet...</textarea><br /> 
+	<button type="submit" value="Submit">Submit</button>
+</form>
+
+		
 EOT;
 
         
@@ -166,8 +171,11 @@ EOT;
             case "userTweet":
                 $sectionContent = $this->renderUserTweets();
                 break;
-            case "singleTweet":
+            case "viewTweet":
                 $sectionContent = $this->renderViewTweet();
+                break;
+            case "postTweet":
+                $sectionContent = $this->renderPostTweet();
                 break;
             default:
                 $sectionContent = $this->renderHome();

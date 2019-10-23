@@ -126,4 +126,14 @@ class TweeterController extends \mf\control\AbstractController {
          */
         
     }
+
+    public function postTweet(){
+        $emptyView = new TweeterView("");
+        $emptyView->render("postTweet");
+    }
+
+    public function sendTweet(){
+        $tweetToSend = new Tweet;
+        //TODO Create new Tweet and Save it
+    }
 }

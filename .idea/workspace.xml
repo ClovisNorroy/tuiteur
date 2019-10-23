@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6828c84a-4650-4219-a7a6-1340c0b77a7a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/main.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tweeterapp/control/TweeterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/tweeterapp/control/TweeterController.php" afterDir="false" />
@@ -74,7 +73,7 @@
       <workItem from="1571313787422" duration="424000" />
       <workItem from="1571731102780" duration="6492000" />
       <workItem from="1571750359153" duration="255000" />
-      <workItem from="1571832454592" duration="7138000" />
+      <workItem from="1571832454592" duration="9921000" />
     </task>
     <servers />
   </component>
