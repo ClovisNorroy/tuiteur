@@ -1,5 +1,5 @@
 <?php
-
+session_start(); //TODO Implement session TimeOut
 require_once "vendor/autoload.php";
 require_once 'src/mf/utils/ClassLoader.php';
 
@@ -36,10 +36,12 @@ $router->setDefaultRoute('/home/');
 
 $router->run();
 
-$router->urlFor("/tweet/", ['id'=> 51]);
-
-
-
+$hashedPassword = password_hash('azeertyuiop123', PASSWORD_DEFAULT);
+if( password_verify('azeertyuiop12', $hashedPassword )){
+    echo "OUI";
+}else {
+    echo "NON";
+}
 
 /*
 $lignes = Tweet::select('id', 'score')
