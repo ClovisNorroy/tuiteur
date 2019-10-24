@@ -134,6 +134,8 @@ class TweeterController extends \mf\control\AbstractController {
 
     public function sendTweet(){
         $tweetToSend = new Tweet;
-        //TODO Create new Tweet and Save it
+        $tweetToSend->text = $_POST['text'];
+        $tweetToSend->author = 1;
+        $tweetToSend->save();
     }
 }

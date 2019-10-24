@@ -124,11 +124,12 @@ EOT;
      *
      */
     protected function renderPostTweet(){
-
+        $router = new Router();
+        $actionForm = $router->urlFor("/send");
         return <<<EOT
-        <form action ="">
-	<textarea cols="30" rows="2">Enter Tweet...</textarea><br /> 
-	<button type="submit" value="Submit">Submit</button>
+        <form action ="$actionForm" method="post">
+	<textarea cols="30" rows="2" name="text">Enter Tweet...</textarea><br /> 
+	<button type="submit">Send</button>
 </form>
 
 		

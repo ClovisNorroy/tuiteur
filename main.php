@@ -37,11 +37,6 @@ $router->setDefaultRoute('/home/');
 $router->run();
 
 $hashedPassword = password_hash('azeertyuiop123', PASSWORD_DEFAULT);
-if( password_verify('azeertyuiop12', $hashedPassword )){
-    echo "OUI";
-}else {
-    echo "NON";
-}
 
 /*
 $lignes = Tweet::select('id', 'score')
