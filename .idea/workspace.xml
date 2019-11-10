@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6828c84a-4650-4219-a7a6-1340c0b77a7a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/tweeterapp/auth/TweeterAuthentification.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/conf/config.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/main.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mf/auth/Authentification.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/mf/auth/Authentification.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tweeterapp/auth/TweeterAutentification.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tweeterapp/model/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/tweeterapp/model/User.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -88,7 +90,7 @@
       <workItem from="1573318556887" duration="45000" />
       <workItem from="1573318919565" duration="189000" />
       <workItem from="1573395265700" duration="76000" />
-      <workItem from="1573395354615" duration="3801000" />
+      <workItem from="1573395354615" duration="8618000" />
     </task>
     <servers />
   </component>

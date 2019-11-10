@@ -54,7 +54,7 @@ $tuits = $author->tweets()->get();
 $tuit63 = Tweet::where('id', '=', '63')->first();
 $liker = $tuit63->likedBy()->first();
 
-//echo $liker;
+echo $liker;
 
 $tuitLiked = $liker->liked()->first();
 //echo $tuitLiked;

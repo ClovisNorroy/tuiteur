@@ -153,7 +153,7 @@ class Authentification extends AbstractAuthentification
             $this->updateSession($username, $level);
         }
         else
-            throw new \Exception("Erreur d'authentification");
+            throw new AuthentificationException("Erreur d'authentification");
     }
 
     protected function hashPassword($password)
