@@ -13,12 +13,16 @@ use tweeterapp\model\User as User ;
 use tweeterapp\model\Tweet;
 use mf\router\Router;
 
+try {
 $router = new \mf\router\Router();
 $db = new Illuminate\Database\Capsule\Manager();
 
-$db->addConnection($config);
-$db->setAsGlobal();
-$db->bootEloquent();
+    $db->addConnection($config);
+    $db->setAsGlobal();
+    $db->bootEloquent();
+} catch (Exception $e){
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+}
 
 $router->addRoute('maison',
     '/home/',
@@ -38,13 +42,13 @@ $router->run();
 
 $hashedPassword = password_hash('azeertyuiop123', PASSWORD_DEFAULT);
 
-/*
+
 $lignes = Tweet::select('id', 'score')
             ->where('score', '>', '0')
             ->get();
 $tuit = Tweet::where('id', '=', 49)->first();
 $author = $tuit->author()->first();
-//    echo $author;
+//echo $author;
 
 $tuits = $author->tweets()->get();
 $tuit63 = Tweet::where('id', '=', '63')->first();
@@ -70,5 +74,5 @@ $author2 = User::select()->where('id', '=', 1)->first();
 $tweets = $author2->Tweets()->get();
 
 $tweets = Tweet::select()->get();
-var_dump($_SERVER);
-*/
+//var_dump($_SERVER);
+
