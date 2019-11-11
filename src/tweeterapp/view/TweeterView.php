@@ -137,12 +137,27 @@ EOT;
     }
 
     protected function renderFollowers(){
-        //$followers = User::select('follower')->where('followee', '=', $_SESSION['username']);
         $htmlFollower = "";
         foreach($this->data as $follower){
             $htmlFollower.='<div class="follower">'.$follower->username.'</div>';
         }
         return $htmlFollower;
+    }
+
+    protected function renderSignup(){
+        $actionForm = $this->router->urlFor("/checksignup");
+        return <<<EOT
+        <form action="$actionForm" method="post">
+        Fullname : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="fullname" placeholder="Fullname">
+        <br>
+        Username : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="username" placeholder="Username">
+        <br>
+        Password : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" placeholder="password">
+        <br>
+        Retype password : <input type="password" name="retypepassword" placeholder="retype password">
+        <br>
+        <button type="submit">Signup</button>
+EOT;
     }
 
     /* Méthode renderBody
@@ -181,6 +196,9 @@ EOT;
                 break;
             case "followers":
                 $sectionContent = $this->renderFollowers();
+                break;
+            case "signup":
+                $sectionContent = $this->renderSignup();
                 break;
             default:
                 $sectionContent = $this->renderHome();

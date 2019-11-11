@@ -67,6 +67,15 @@ $router->setDefaultRoute('/home');
         '/logout',
         '\tweeterapp\control\TweeterAdminController',
         'logout');
+    $router->addRoute(
+        'signup',
+        '/signup',
+        'tweeterapp\control\TweeterAdminController',
+        'signup');
+    $router->addRoute(
+        'checksignup',
+        '/checksignup',
+        'tweeterapp\control\TweeterAdminController',
+        'checkSignup');
     $router->setDefaultRoute('/home');
 $router->run();
-

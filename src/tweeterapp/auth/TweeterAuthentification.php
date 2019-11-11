@@ -52,17 +52,21 @@ class TweeterAuthentification extends \mf\auth\Authentification {
     
     public function createUser($username, $pass, $fullname,
                                $level=self::ACCESS_LEVEL_USER) {
+        echo "1";
         $userExist = User::where('username', 'like', '%'.$username.'%')->first();
+        echo "2";
         if($userExist){
+            echo "3";
             throw new AuthentificationException("Erreur: nom d'utilisateur éxiste déjà.\n");
         }
         else{
-            User::create([
-                'fullname'=> $fullname,
-                'username' => $username,
-                'password' => password_hash($pass, PASSWORD_DEFAULT),
-                'level' => $level
-            ]);
+            $newUser = new User;
+            $newUser->fullname = $fullname;
+            $newUser->username = $username;
+            $newUser->password = password_hash($pass, PASSWORD_DEFAULT);
+            $newUser->level = $level;
+            $newUser->followers = 0 ; // Followers = nb Followers ?
+            $newUser->save();
         }
     }
 
