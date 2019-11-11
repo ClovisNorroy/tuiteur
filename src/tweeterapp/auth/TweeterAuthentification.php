@@ -3,7 +3,8 @@
 namespace tweeterapp\auth;
 
 use mf\auth\Authentification;
-use mysql_xdevapi\Exception;
+use mf\auth\exception\AuthentificationException;
+use tweeterapp\model\User;
 
 class TweeterAuthentification extends \mf\auth\Authentification {
 
@@ -29,24 +30,24 @@ class TweeterAuthentification extends \mf\auth\Authentification {
         parent::__construct();
     }
 
-    /* La méthode createUser 
-     * 
+    /* La méthode createUser
+     *
      *  Permet la création d'un nouvel utilisateur de l'application
-     * 
-     *  
-     * @param : $username : le nom d'utilisateur choisi 
-     * @param : $pass : le mot de passe choisi 
-     * @param : $fullname : le nom complet 
+     *
+     *
+     * @param : $username : le nom d'utilisateur choisi
+     * @param : $pass : le mot de passe choisi
+     * @param : $fullname : le nom complet
      * @param : $level : le niveaux d'accès (par défaut ACCESS_LEVEL_USER)
-     * 
+     *
      * Algorithme :
      *
      *  Si un utilisateur avec le même nom d'utilisateur existe déjà en BD
-     *     - soulever une exception 
-     *  Sinon      
-     *     - créer un nouvel modèle User avec les valeurs en paramètre 
+     *     - soulever une exception
+     *  Sinon
+     *     - créer un nouvel modèle User avec les valeurs en paramètre
      *       ATTENTION : Le mot de passe ne doit pas être enregistré en clair.
-     * 
+     *
      */
     
     public function createUser($username, $pass, $fullname,
@@ -87,10 +88,11 @@ class TweeterAuthentification extends \mf\auth\Authentification {
         $user = User::where('username', 'like', '%'.$username."%")->first();
         if($user){
                 $authentification = new Authentification();
-                $authentification->login($username, $user->password, $password, $user->level) ;
+                $authentification->login($username, $user->password, $password, $user->level);
         }
         else{
-            throw new AuthentificationException("Erreur: identifiants de connexion erronés.\n");
+            $e = new \Exception("Erreur: identifiants de connexion erronés.\n");
+            error_log($e);
         }
     }
 

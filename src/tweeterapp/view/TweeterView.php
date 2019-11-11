@@ -128,7 +128,7 @@ EOT;
     protected function renderLogin(){
         $actionForm = $this->router->urlFor("/checklogin");
         return <<<EOT
-        <form action="$actionForm" method="post"">
+        <form action="$actionForm" method="post">
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="password">
         <button type="submit">Connect</button>
@@ -137,7 +137,12 @@ EOT;
     }
 
     protected function renderFollowers(){
-        $followers = User
+        //$followers = User::select('follower')->where('followee', '=', $_SESSION['username']);
+        $htmlFollower = "";
+        foreach($this->data as $follower){
+            $htmlFollower.='<div class="follower">'.$follower->username.'</div>';
+        }
+        return $htmlFollower;
     }
 
     /* Méthode renderBody
@@ -173,6 +178,9 @@ EOT;
                 break;
             case "login":
                 $sectionContent= $this->renderLogin();
+                break;
+            case "followers":
+                $sectionContent = $this->renderFollowers();
                 break;
             default:
                 $sectionContent = $this->renderHome();
