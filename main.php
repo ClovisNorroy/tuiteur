@@ -12,9 +12,10 @@ $config = parse_ini_file("conf/config.ini");
 use tweeterapp\model\User as User ;
 use tweeterapp\model\Tweet;
 use mf\router\Router;
+use \tweeterapp\auth\TweeterAuthentification;
 
 try {
-$router = new \mf\router\Router();
+$router = new Router();
 $db = new Illuminate\Database\Capsule\Manager();
 
     $db->addConnection($config);
@@ -24,18 +25,34 @@ $db = new Illuminate\Database\Capsule\Manager();
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
 
-$router->addRoute('maison',
+$router->addRoute('home',
     '/home/',
     '\tweeterapp\control\TweeterController',
     'viewHome');
-
+//TODO create Function 'Initialize routes'
 $router->setDefaultRoute('/home/');
 
 $router->addRoute('home', '/home', '\tweeterapp\control\TweeterController', 'viewHome');
 $router->addRoute('singletweet', '/tweet', '\tweeterapp\control\TweeterController', 'viewTweet');
 $router->addRoute("author", '/author', '\tweeterapp\control\TweeterController', 'viewUserTweets');
-$router->addRoute("post", "/post", '\tweeterapp\control\TweeterController', 'postTweet' );
-$router->addroute("send", "/send", '\tweeterapp\control\TweeterController', 'sendTweet');
+$router->addRoute(
+    "post",
+    "/post",
+    '\tweeterapp\control\TweeterController',
+    'postTweet',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
+$router->addroute(
+    "send",
+    "/send",
+    '\tweeterapp\control\TweeterController',
+    'sendTweet',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
+$router->addRoute(
+    'login',
+    '/login',
+    '\tweeterapp\control\TweeterAdminController',
+    'postTweet',
+    TweeterAuthentification::ACCESS_LEVEL_NONE);
 $router->setDefaultRoute('/home/');
 
 $router->run();
@@ -54,7 +71,7 @@ $tuits = $author->tweets()->get();
 $tuit63 = Tweet::where('id', '=', '63')->first();
 $liker = $tuit63->likedBy()->first();
 
-echo $liker;
+//echo $liker;
 
 $tuitLiked = $liker->liked()->first();
 //echo $tuitLiked;

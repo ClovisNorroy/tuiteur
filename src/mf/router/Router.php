@@ -4,6 +4,9 @@
 namespace mf\router;
 
 
+use Illuminate\Support\Facades\Auth;
+use mf\auth\Authentification;
+
 class Router extends AbstractRouter
 {
     /**
@@ -19,12 +22,14 @@ class Router extends AbstractRouter
     {
         //créer une instance de la classe par défaut
         // et éxecute la méthode par défault de cette classe
+        $auth = new Authentification();
         $route=self::$aliases['default'];
         $controllerName = self::$routes[$route][0];
         $methodName = self::$routes[$route][1];
         // Si un chemin valid a été demandé, créer instance et méthode concerné
         // à la place de celle par défaut
-        if(isset(self::$routes[$this->http_req->path_info])){
+        $accessReq =self::$routes[$this->http_req->path_info][2];
+        if(isset(self::$routes[$this->http_req->path_info]) && $auth->checkAccessRight($accessReq)){
             $controllerName = self::$routes[$this->http_req->path_info][0];
             $methodName = self::$routes[$this->http_req->path_info][1];
         }
@@ -49,10 +54,11 @@ class Router extends AbstractRouter
         self::$aliases['default']=$url;
     }
 
-    public function addRoute($name, $url, $controller, $method)
+    public function addRoute($name, $url, $controller, $method, $accessLevel = Authentification::ACCESS_LEVEL_NONE)
     {
-        self::$routes[$url] = [$controller, $method] ;
+        self::$routes[$url] = [$controller, $method, $accessLevel] ;
         self::$aliases[$name]=$url;
+
     }
 
     public static function executeRoute($alias){

@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6828c84a-4650-4219-a7a6-1340c0b77a7a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/tweeterapp/auth/TweeterAuthentification.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/symfony2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tweeterapp/control/TweeterAdminController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/main.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mf/auth/Authentification.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/mf/auth/Authentification.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tweeterapp/auth/TweeterAutentification.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tweeterapp/model/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/tweeterapp/model/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mf/router/AbstractRouter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/mf/router/AbstractRouter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mf/router/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/mf/router/Router.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tweeterapp/view/TweeterView.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/tweeterapp/view/TweeterView.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +54,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
-    <property name="settings.editor.selected.configurable" value="discord-application" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -90,7 +91,8 @@
       <workItem from="1573318556887" duration="45000" />
       <workItem from="1573318919565" duration="189000" />
       <workItem from="1573395265700" duration="76000" />
-      <workItem from="1573395354615" duration="8618000" />
+      <workItem from="1573395354615" duration="8945000" />
+      <workItem from="1573461781710" duration="9146000" />
     </task>
     <servers />
   </component>

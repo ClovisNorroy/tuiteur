@@ -2,6 +2,8 @@
 
 namespace mf\router;
 
+use mf\auth\Authentification;
+
 abstract class AbstractRouter {
 
     /*   Une instance de HttpRequest */
@@ -116,6 +118,6 @@ abstract class AbstractRouter {
      *
      */
 
-    abstract public function addRoute($name, $url, $ctrl, $mth);
+    abstract public function addRoute($name, $url, $ctrl, $mth, $accessLevel);
 
 }

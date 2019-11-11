@@ -7,6 +7,7 @@ use mf\router\Router;
 use tweeterapp\control\TweeterController;
 
 class TweeterView extends \mf\view\AbstractView {
+    private $router;
   
     /* Constructeur 
     *
@@ -14,6 +15,7 @@ class TweeterView extends \mf\view\AbstractView {
     */
     public function __construct( $data ){
         parent::__construct($data);
+        $this->router = new Router();
     }
 
     /* Méthode renderHeader
@@ -39,13 +41,13 @@ class TweeterView extends \mf\view\AbstractView {
      */
     
     private function renderHome(){
-        $router = new \mf\router\Router();
         $homeHTML="";
+        $postLink = $this->router->urlFor('/post');
         foreach($this->data as $tweet){
             $text = $tweet['text'];
             $author = $tweet['authorNickName'];
-            $tweetLink = $router->urlFor("/tweet", ['id'=> $tweet['id']]) ;
-            $authorLink = $router->urlFor("/author", ['id' => $tweet['author']]) ;
+            $tweetLink = $this->router->urlFor("/tweet", ['id'=> $tweet['id']]) ;
+            $authorLink = $this->router->urlFor("/author", ['id' => $tweet['author']]) ;
             $homeHTML.= <<<EOT
             <div class = "tweet">
             <div class="tweet-text"><a href="$tweetLink">$text</a></div>
@@ -54,6 +56,7 @@ class TweeterView extends \mf\view\AbstractView {
             <hr>
 EOT;
         }
+        $homeHTML.=$this->renderPostTweet();
         return $homeHTML;
         /*
          * Retourne le fragment HTML qui affiche tous les Tweets. 
@@ -67,8 +70,11 @@ EOT;
   
     /* Méthode renderUeserTweets
      *
-     * Vue de la fonctionalité afficher tout les Tweets d'un utilisateur donné. 
-     * 
+     * Vue de la fonctionalité afficher tout les Tweets d'un utilisateur donné.
+     * Retourne le fragment HTML pour afficher
+     * tous les Tweets d'un utilisateur donné.
+     *
+     * L'attribut $this->data contient un objet User.
      */
      
     private function renderUserTweets(){
@@ -81,23 +87,17 @@ EOT;
 EOT;
         }
         return $homeHTML;
-
-        /* 
-         * Retourne le fragment HTML pour afficher
-         * tous les Tweets d'un utilisateur donné. 
-         *  
-         * L'attribut $this->data contient un objet User.
-         *
-         */
-        
     }
   
     /* Méthode renderViewTweet 
      * 
      * Rréalise la vue de la fonctionnalité affichage d'un tweet
+     * Retourne le fragment HTML qui réalise l'affichage d'un tweet
+     * en particulié
      *
+     * L'attribut $this->data contient un objet Tweet
      */
-    
+
     private function renderViewTweet(){
         $textTweet = $this->data['text'] ;
         return <<<EOT
@@ -105,15 +105,6 @@ EOT;
         <div class="tweet-text"> $textTweet </div>
         </div>
 EOT;
-
-        /* 
-         * Retourne le fragment HTML qui réalise l'affichage d'un tweet 
-         * en particulié 
-         * 
-         * L'attribut $this->data contient un objet Tweet
-         *
-         */
-        
     }
 
 
@@ -121,30 +112,33 @@ EOT;
     /* Méthode renderPostTweet
      *
      * Realise la vue de régider un Tweet
-     *
+     * Retourne la framgment HTML qui dessine un formulaire pour la rédaction
+     * d'un tweet, l'action (bouton de validation) du formulaire est la route "/send/"
      */
     protected function renderPostTweet(){
-        $router = new Router();
-        $actionForm = $router->urlFor("/send");
+        $actionForm = $this->router->urlFor("/send");
         return <<<EOT
         <form action ="$actionForm" method="post">
-	<textarea cols="30" rows="2" name="text">Enter Tweet...</textarea><br /> 
-	<button type="submit">Send</button>
-</form>
-
-		
+	        <textarea cols="30" rows="2" name="text">Enter Tweet...</textarea><br /> 
+	        <button type="submit">Send</button>
+        </form>
 EOT;
-
-        
-        /* Méthode renderPostTweet
-         *
-         * Retourne la framgment HTML qui dessine un formulaire pour la rédaction 
-         * d'un tweet, l'action (bouton de validation) du formulaire est la route "/send/"
-         *
-         */
-        
     }
 
+    protected function renderLogin(){
+        $actionForm = $this->router->urlFor("/checklogin");
+        return <<<EOT
+        <form action="$actionForm" method="post"">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit">Connect</button>
+EOT;
+
+    }
+
+    protected function renderFollowers(){
+        $followers = User
+    }
 
     /* Méthode renderBody
      *
@@ -152,18 +146,17 @@ EOT;
      * par la méthode héritée render.
      *
      */
-    
+
     protected function renderBody($selector){
         $html = <<<EOT
-<!DOCTYPE html>
-<html lang="fr">
-   <head>
-      <meta charset="utf-8">
-      <title> Tuiteur </title>
-      <link rel="stylesheet" href="html/style.css">
-    </head>
+        <!DOCTYPE html>
+        <html lang="fr">
+            <head>
+                <meta charset="utf-8">
+                <title> Tuiteur </title>
+                <link rel="stylesheet" href="html/style.css">
+            </head>
 EOT;
-
         $section = "";
         switch ($selector) {
             case "home":
@@ -177,6 +170,9 @@ EOT;
                 break;
             case "postTweet":
                 $sectionContent = $this->renderPostTweet();
+                break;
+            case "login":
+                $sectionContent= $this->renderLogin();
                 break;
             default:
                 $sectionContent = $this->renderHome();
