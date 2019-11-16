@@ -56,7 +56,6 @@ class TweeterView extends \mf\view\AbstractView {
             <hr>
 EOT;
         }
-        $homeHTML.=$this->renderPostTweet();
         return $homeHTML;
         /*
          * Retourne le fragment HTML qui affiche tous les Tweets. 
@@ -160,6 +159,41 @@ EOT;
 EOT;
     }
 
+    protected function renderBottomMenu()
+    {
+        $postLink = $this->router->urlFor("/post");
+        return <<<EOT
+        <div> <a href='$postLink' >New</a>"
+EOT;
+    }
+
+    protected function renderTopMenu(){
+        $homeLink = $this->router->urlFor("/home");
+        $loginLink = $this->router->urlFor("/login");
+        $signupLink = $this->router->urlFor("/signup");
+        //$followingLink = $this->router->urlFor("/following");
+        $logoutLink = $this->router->urlFor("/logout");
+        if($_SESSION['user_login']){
+            return <<<EOT
+                <div>
+                    <a href="$homeLink"><img src="https://webetu.iutnc.univ-lorraine.fr/www/boumaza1/teaching/php-lp/project/figs/home.png" alt="home"></a>
+                    <a href=""><img src="html/followees.png" alt="followees"></a>
+                    <a href="$logoutLink"><img src="html/logout.png" alt="logout"></a>
+EOT;
+
+
+        }else{
+            return <<<EOT
+                <div>
+                    <a href="$homeLink"><img src="https://webetu.iutnc.univ-lorraine.fr/www/boumaza1/teaching/php-lp/project/figs/home.png" alt="home"></a>
+                    <a href="$loginLink"><img src="html/login.png" alt="login"</a>
+                    <a href="$signupLink"><img src="html/signup.png" alt="signup"</a>
+                </div>
+EOT;
+        }
+    }
+
+
     /* Méthode renderBody
      *
      * Retourne la framgment HTML de la balise <body> elle est appelée
@@ -174,7 +208,7 @@ EOT;
             <head>
                 <meta charset="utf-8">
                 <title> Tuiteur </title>
-                <link rel="stylesheet" href="html/style.css">
+                <link rel="stylesheet" href="https://enywook.github.io/tuiteur/html/style.css">
             </head>
 EOT;
         $section = "";
@@ -203,26 +237,18 @@ EOT;
             default:
                 $sectionContent = $this->renderHome();
         }
-        echo $html."<body><header>".$this->renderHeader()."</header>"
-        ."<section>".$sectionContent."</section>"
-        ."<footer>".$this->renderFooter()."</footer></body>" ;
+
+        if($_SESSION['user_login']){
+            $bottomMenu=$this->renderBottomMenu();
         }
-
-        /*
-         * voire la classe AbstractView
-         * 
-         */
-
-
-
-
-
-
-
-
-
-
-
-
-    
+        else{
+            $bottomMenu="<p>Signin to write a Tweet !</p>";
+        }
+        $html.="<body><header>".$this->renderHeader()."</header>"
+            .$this->renderTopMenu()
+            ."<section>".$sectionContent."</section>"
+            .$bottomMenu
+            ."<footer>".$this->renderFooter()."</footer></body>" ;
+        echo $html;
+    }
 }

@@ -79,3 +79,5 @@ $router->setDefaultRoute('/home');
         'checkSignup');
     $router->setDefaultRoute('/home');
 $router->run();
+
+echo $_SERVER['DOCUMENT_ROOT'];
