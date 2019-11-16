@@ -23,11 +23,10 @@ class TweeterAdminController extends AbstractController
         if(isset($_POST['username']) && isset($_POST['password'])){
             $tweeterAuth = new TweeterAuthentification();
             $tweeterAuth->loginUser($_POST['username'], $_POST['password']);
-            if(isset($_SESSION['username'])) {
-                echo "Session set";
+            if(isset($_SESSION['user_login'])) {
                 //$tweeterView = new TweeterView(User::select('follower')->where('followee', 'like', '%'.$_POST['username'].'%'));
                 $tweeterView = new TweeterView(User::select('follower')->where('followee', '=', '9'));
-                $tweeterView->render("followers");
+                $tweeterView->render("followees");
             }
             else
                 Router::executeRoute("login");
@@ -50,13 +49,11 @@ class TweeterAdminController extends AbstractController
         isset($_POST['retypepassword']) &&
         isset($_POST['fullname']) &&
         $_POST['password'] == $_POST['retypepassword']){
-            echo "Good" ;
             $tweeterAuth = new TweeterAuthentification();
                 $tweeterAuth->createUser(
                     $_POST['username'],
                     password_hash($_POST['password'], PASSWORD_DEFAULT),
                     $_POST['fullname']);
-                echo 'It did work' ;
             Router::executeRoute("home");
         }else
             Router::executeRoute("signup");

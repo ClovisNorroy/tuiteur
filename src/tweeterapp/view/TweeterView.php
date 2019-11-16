@@ -50,13 +50,20 @@ class TweeterView extends \mf\view\AbstractView {
             $authorLink = $this->router->urlFor("/author", ['id' => $tweet['author']]) ;
             $homeHTML.= <<<EOT
             <div class = "tweet">
-            <div class="tweet-text"><a href="$tweetLink">$text</a></div>
-            <div class="tweet-author"> <a href="$authorLink">$author</a></div>
+                <div class="tweet-text"><a href="$tweetLink">$text</a></div>
+                <div class="tweet-author"> <a href="$authorLink">$author</a></div>
             </div>
             <hr>
 EOT;
         }
-        return $homeHTML;
+        if($_SESSION['user_login']){
+            $bottomMenu=$this->renderBottomMenu();
+        }
+        else{
+            $bottomMenu="<p>Signin to write a Tweet !</p>";
+        }
+
+        return $homeHTML.$bottomMenu;
         /*
          * Retourne le fragment HTML qui affiche tous les Tweets. 
          *  
@@ -101,7 +108,7 @@ EOT;
         $textTweet = $this->data['text'] ;
         return <<<EOT
         <div class="tweet">
-        <div class="tweet-text"> $textTweet </div>
+            <div class="tweet-text"> $textTweet </div>
         </div>
 EOT;
     }
@@ -118,7 +125,7 @@ EOT;
         $actionForm = $this->router->urlFor("/send");
         return <<<EOT
         <form action ="$actionForm" method="post">
-	        <textarea cols="30" rows="2" name="text">Enter Tweet...</textarea><br /> 
+	        <textarea cols="30" rows="2" name="text">Enter Tweet...</textarea></br> 
 	        <button type="submit">Send</button>
         </form>
 EOT;
@@ -128,9 +135,10 @@ EOT;
         $actionForm = $this->router->urlFor("/checklogin");
         return <<<EOT
         <form action="$actionForm" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="password">
-        <button type="submit">Connect</button>
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="password">
+            <button type="submit">Connect</button>
+        </form>
 EOT;
 
     }
@@ -147,15 +155,16 @@ EOT;
         $actionForm = $this->router->urlFor("/checksignup");
         return <<<EOT
         <form action="$actionForm" method="post">
-        Fullname : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="fullname" placeholder="Fullname">
-        <br>
-        Username : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="username" placeholder="Username">
-        <br>
-        Password : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" placeholder="password">
-        <br>
-        Retype password : <input type="password" name="retypepassword" placeholder="retype password">
-        <br>
-        <button type="submit">Signup</button>
+            Fullname : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="fullname" placeholder="Fullname">
+            <br>
+            Username : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="username" placeholder="Username">
+            <br>
+            Password : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" placeholder="password">
+            <br>
+            Retype password : <input type="password" name="retypepassword" placeholder="retype password">
+            <br>
+            <button type="submit">Signup</button>
+        </form>
 EOT;
     }
 
@@ -163,31 +172,33 @@ EOT;
     {
         $postLink = $this->router->urlFor("/post");
         return <<<EOT
-        <div> <a href='$postLink' >New</a>"
+        <div> 
+            <a href='$postLink' >New</a>
+        </div>
+
 EOT;
     }
 
     protected function renderTopMenu(){
         $homeLink = $this->router->urlFor("/home");
-        $loginLink = $this->router->urlFor("/login");
-        $signupLink = $this->router->urlFor("/signup");
-        //$followingLink = $this->router->urlFor("/following");
-        $logoutLink = $this->router->urlFor("/logout");
-        if($_SESSION['user_login']){
+        if(isset($_SESSION['user_login'])){
+            //$followingLink = $this->router->urlFor("/following");
+            $logoutLink = $this->router->urlFor("/logout");
             return <<<EOT
                 <div>
-                    <a href="$homeLink"><img src="https://webetu.iutnc.univ-lorraine.fr/www/boumaza1/teaching/php-lp/project/figs/home.png" alt="home"></a>
-                    <a href=""><img src="html/followees.png" alt="followees"></a>
-                    <a href="$logoutLink"><img src="html/logout.png" alt="logout"></a>
+                    <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
+                    <a href=""><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
+                    <a href="$logoutLink"><img src="https://enywook.github.io/tuiteur/html/logout.png" alt="logout"></a>
+                </div>
 EOT;
-
-
         }else{
+            $loginLink = $this->router->urlFor("/login");
+            $signupLink = $this->router->urlFor("/signup");
             return <<<EOT
                 <div>
-                    <a href="$homeLink"><img src="https://webetu.iutnc.univ-lorraine.fr/www/boumaza1/teaching/php-lp/project/figs/home.png" alt="home"></a>
-                    <a href="$loginLink"><img src="html/login.png" alt="login"</a>
-                    <a href="$signupLink"><img src="html/signup.png" alt="signup"</a>
+                    <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
+                    <a href="$loginLink"><img src="https://enywook.github.io/tuiteur/html/login.png" alt="login"></a>
+                    <a href="$signupLink"><img src="https://enywook.github.io/tuiteur/html/signup.png" alt="signup"></a>
                 </div>
 EOT;
         }
@@ -202,16 +213,6 @@ EOT;
      */
 
     protected function renderBody($selector){
-        $html = <<<EOT
-        <!DOCTYPE html>
-        <html lang="fr">
-            <head>
-                <meta charset="utf-8">
-                <title> Tuiteur </title>
-                <link rel="stylesheet" href="https://enywook.github.io/tuiteur/html/style.css">
-            </head>
-EOT;
-        $section = "";
         switch ($selector) {
             case "home":
                 $sectionContent = $this->renderHome();
@@ -228,26 +229,20 @@ EOT;
             case "login":
                 $sectionContent= $this->renderLogin();
                 break;
-            case "followers":
-                $sectionContent = $this->renderFollowers();
-                break;
             case "signup":
                 $sectionContent = $this->renderSignup();
+                break;
+            case "followers":
+                $sectionContent = $this->renderFollowers();
                 break;
             default:
                 $sectionContent = $this->renderHome();
         }
 
-        if($_SESSION['user_login']){
-            $bottomMenu=$this->renderBottomMenu();
-        }
-        else{
-            $bottomMenu="<p>Signin to write a Tweet !</p>";
-        }
-        $html.="<body><header>".$this->renderHeader()."</header>"
+
+        $html="<body><header>".$this->renderHeader()."</header>"
             .$this->renderTopMenu()
             ."<section>".$sectionContent."</section>"
-            .$bottomMenu
             ."<footer>".$this->renderFooter()."</footer></body>" ;
         echo $html;
     }

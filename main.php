@@ -15,69 +15,66 @@ use \tweeterapp\auth\TweeterAuthentification;
 $router = new Router();
 $db = new Illuminate\Database\Capsule\Manager();
 
-    $db->addConnection($config);
-    $db->setAsGlobal();
-    $db->bootEloquent();
+$db->addConnection($config);
+$db->setAsGlobal();
+$db->bootEloquent();
 
 $router->addRoute('home',
     '/home/',
     '\tweeterapp\control\TweeterController',
     'viewHome');
-//TODO create Function 'Initialize routes'
+$router->addRoute(
+    'home',
+    '/home',
+    '\tweeterapp\control\TweeterController',
+    'viewHome');
+$router->addRoute(
+    'singletweet',
+    '/tweet',
+    '\tweeterapp\control\TweeterController',
+    'viewTweet');
+$router->addRoute(
+    'author',
+    '/author',
+    '\tweeterapp\control\TweeterController',
+    'viewUserTweets');
+$router->addRoute(
+    "post",
+    "/post",
+    '\tweeterapp\control\TweeterController',
+    'postTweet',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
+$router->addroute(
+    "send",
+    "/send",
+    '\tweeterapp\control\TweeterController',
+    'sendTweet',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
+$router->addRoute(
+    'login',
+    '/login',
+    '\tweeterapp\control\TweeterAdminController',
+    'postTweet');
+$router->addRoute(
+    'checkLogin',
+    '/checklogin',
+    '\tweeterapp\control\TweeterAdminController',
+    'checkLogin');
+$router->addRoute(
+    'logout',
+    '/logout',
+    '\tweeterapp\control\TweeterAdminController',
+    'logout');
+$router->addRoute(
+    'signup',
+    '/signup',
+    'tweeterapp\control\TweeterAdminController',
+    'signup');
+$router->addRoute(
+    'checksignup',
+    '/checksignup',
+    'tweeterapp\control\TweeterAdminController',
+    'checkSignup');
 $router->setDefaultRoute('/home');
-    $router->addRoute(
-        'home',
-        '/home',
-        '\tweeterapp\control\TweeterController',
-        'viewHome');
-    $router->addRoute(
-        'singletweet',
-        '/tweet',
-        '\tweeterapp\control\TweeterController',
-        'viewTweet');
-    $router->addRoute(
-        'author',
-        '/author',
-        '\tweeterapp\control\TweeterController',
-        'viewUserTweets');
-    $router->addRoute(
-        "post",
-        "/post",
-        '\tweeterapp\control\TweeterController',
-        'postTweet',
-        TweeterAuthentification::ACCESS_LEVEL_USER);
-    $router->addroute(
-        "send",
-        "/send",
-        '\tweeterapp\control\TweeterController',
-        'sendTweet',
-        TweeterAuthentification::ACCESS_LEVEL_USER);
-    $router->addRoute(
-        'login',
-        '/login',
-        '\tweeterapp\control\TweeterAdminController',
-        'postTweet');
-    $router->addRoute(
-        'checkLogin',
-        '/checklogin',
-        '\tweeterapp\control\TweeterAdminController',
-        'checkLogin');
-    $router->addRoute(
-        'logout',
-        '/logout',
-        '\tweeterapp\control\TweeterAdminController',
-        'logout');
-    $router->addRoute(
-        'signup',
-        '/signup',
-        'tweeterapp\control\TweeterAdminController',
-        'signup');
-    $router->addRoute(
-        'checksignup',
-        '/checksignup',
-        'tweeterapp\control\TweeterAdminController',
-        'checkSignup');
-    $router->setDefaultRoute('/home');
-$router->run();
 
-echo $_SERVER['DOCUMENT_ROOT'];
+$router->run();
