@@ -4,6 +4,8 @@ namespace tweeterapp\view;
 
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use mf\router\Router;
+use tweeterapp\auth\TweeterAuthentification;
+use tweeterapp\control\TweeterAdminController;
 use tweeterapp\control\TweeterController;
 
 class TweeterView extends \mf\view\AbstractView {
@@ -25,20 +27,10 @@ class TweeterView extends \mf\view\AbstractView {
     private function renderHeader(){
         return '<div class = "theme-backcolor1"><h1>MiniTweeTR</h1></div>';
     }
-    
-    /* Méthode renderFooter
-     *
-     * Retourne le fragment HTML du bas de la page (unique pour toutes les vues)
-     */
+
     private function renderFooter(){
         return 'La super app créée en Licence Pro &copy;2019';
     }
-
-    /* Méthode renderHome
-     *
-     * Vue de la fonctionalité afficher tous les Tweets. 
-     *  
-     */
     
     private function renderHome(){
         $homeHTML="";
@@ -64,24 +56,7 @@ EOT;
         }
 
         return $homeHTML.$bottomMenu;
-        /*
-         * Retourne le fragment HTML qui affiche tous les Tweets. 
-         *  
-         * L'attribut $this->data contient un tableau d'objets tweet.
-         * 
-         */
-        
-        
     }
-  
-    /* Méthode renderUeserTweets
-     *
-     * Vue de la fonctionalité afficher tout les Tweets d'un utilisateur donné.
-     * Retourne le fragment HTML pour afficher
-     * tous les Tweets d'un utilisateur donné.
-     *
-     * L'attribut $this->data contient un objet User.
-     */
      
     private function renderUserTweets(){
         $homeHTML="";
@@ -94,15 +69,6 @@ EOT;
         }
         return $homeHTML;
     }
-  
-    /* Méthode renderViewTweet 
-     * 
-     * Rréalise la vue de la fonctionnalité affichage d'un tweet
-     * Retourne le fragment HTML qui réalise l'affichage d'un tweet
-     * en particulié
-     *
-     * L'attribut $this->data contient un objet Tweet
-     */
 
     private function renderViewTweet(){
         $textTweet = $this->data['text'] ;
@@ -113,14 +79,6 @@ EOT;
 EOT;
     }
 
-
-
-    /* Méthode renderPostTweet
-     *
-     * Realise la vue de régider un Tweet
-     * Retourne la framgment HTML qui dessine un formulaire pour la rédaction
-     * d'un tweet, l'action (bouton de validation) du formulaire est la route "/send/"
-     */
     protected function renderPostTweet(){
         $actionForm = $this->router->urlFor("/send");
         return <<<EOT
@@ -181,14 +139,16 @@ EOT;
 
     protected function renderTopMenu(){
         $homeLink = $this->router->urlFor("/home");
-        if(isset($_SESSION['user_login'])){
+        if(TweeterAuthentification::isLogged()){
             //$followingLink = $this->router->urlFor("/following");
             $logoutLink = $this->router->urlFor("/logout");
+            $homeLoggedLink = $this->router->urlFor("/homeLogged");
             return <<<EOT
                 <div>
                     <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
                     <a href=""><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
                     <a href="$logoutLink"><img src="https://enywook.github.io/tuiteur/html/logout.png" alt="logout"></a>
+                    <a href="$homeLoggedLink"><img src="https://enywook.github.io/tuiteur/html/themeisle-brands.svg" alt="homeLogged"></a>
                 </div>
 EOT;
         }else{
@@ -203,15 +163,33 @@ EOT;
 EOT;
         }
     }
+    /*
+    protected function renderHomeLogged(){
+        $homeHTML="";
+        $postLink = $this->router->urlFor('/post');
+        foreach($this->data as $tweet){
+            $text = $tweet['text'];
+            $author = $tweet['authorNickName'];
+            $tweetLink = $this->router->urlFor("/tweet", ['id'=> $tweet['id']]) ;
+            $authorLink = $this->router->urlFor("/author", ['id' => $tweet['author']]) ;
+            $homeHTML.= <<<EOT
+            <div class = "tweet">
+                <div class="tweet-text"><a href="$tweetLink">$text</a></div>
+                <div class="tweet-author"> <a href="$authorLink">$author</a></div>
+            </div>
+            <hr>
+EOT;
+        }
+        if($_SESSION['user_login']){
+            $bottomMenu=$this->renderBottomMenu();
+        }
+        else{
+            $bottomMenu="<p>Signin to write a Tweet !</p>";
+        }
 
-
-    /* Méthode renderBody
-     *
-     * Retourne la framgment HTML de la balise <body> elle est appelée
-     * par la méthode héritée render.
-     *
-     */
-
+        return $homeHTML.$bottomMenu;
+    }
+*/
     protected function renderBody($selector){
         switch ($selector) {
             case "home":
@@ -234,6 +212,9 @@ EOT;
                 break;
             case "followers":
                 $sectionContent = $this->renderFollowers();
+                break;
+            case "homeLogged":
+                $sectionContent = $this->renderHomeLogged();
                 break;
             default:
                 $sectionContent = $this->renderHome();

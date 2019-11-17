@@ -4,6 +4,7 @@
 namespace mf\auth;
 
 
+use mf\router\Router;
 use mysql_xdevapi\Exception;
 
 class Authentification extends AbstractAuthentification
@@ -104,24 +105,12 @@ class Authentification extends AbstractAuthentification
         $this->user_login = null;
         $this->access_level = self::ACCESS_LEVEL_NONE;
         $this->logged_in = false;
+        Router::executeRoute("home");
     }
 
-    /*
- * La méthode checkAccessRight:
- *
- * Méthode pour verifier le niveau d'accès de l'utilisateur.
- *
- * @param  int  : $requested, le niveau requis
- * @return bool : vrai si le niveaux requis est inférieur ou égale à la
- *                valeur du niveau de l'utilisateur
- *
- * Algorithme :
- *
- * Si $requested > $this->access_level
- *     retourner faux
- * Sinon
- *     retourner vrai
- */
+    public static function isLogged(){
+        return isset($_SESSION['user_login']) ? true : false ;
+    }
 
     public function checkAccessRight($requested)
     {
