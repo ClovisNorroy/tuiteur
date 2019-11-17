@@ -6,6 +6,7 @@ namespace mf\auth;
 
 use mf\router\Router;
 use mysql_xdevapi\Exception;
+use tweeterapp\view\TweeterView;
 
 class Authentification extends AbstractAuthentification
 {
@@ -140,6 +141,7 @@ class Authentification extends AbstractAuthentification
     {
         if(self::verifyPassword($given_pass, $db_pass)){
             $this->updateSession($username, $level);
+            Router::executeRoute("home");
         }
         else
             throw new AuthentificationException("Erreur d'authentification");

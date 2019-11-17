@@ -85,15 +85,23 @@ class TweeterController extends \mf\control\AbstractController {
         }
     }
 
+    public function viewFollowers(){
+        $user = User::select()->where('id', '=', 12)->first();
+        $followers = $user->followedBy()->get();
+        $tweeterView = new TweeterView($followers);
+        $tweeterView->render("followers");
+    }
+
     public function postTweet(){
         $emptyView = new TweeterView("");
         $emptyView->render("postTweet");
     }
-
+//TODO Filtrer
     public function sendTweet(){
         $tweetToSend = new Tweet;
         $tweetToSend->text = $_POST['text'];
-        $tweetToSend->author = 1;
+        $tweetToSend->author = $_SESSION['user_login'];
         $tweetToSend->save();
+        $this->viewHome();
     }
 }

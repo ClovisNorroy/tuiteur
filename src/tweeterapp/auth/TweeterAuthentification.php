@@ -86,11 +86,8 @@ class TweeterAuthentification extends \mf\auth\Authentification {
      */
     
     public function loginUser($username, $password){
-        echo "1";
         $user = User::where('username', 'like', '%'.$username."%")->first();
-        echo "2";
         if($user){
-            echo "3";
                 $authentification = new Authentification();
                 $authentification->login($username, $user->password, $password, $user->level);
         }

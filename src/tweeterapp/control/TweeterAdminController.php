@@ -26,7 +26,7 @@ class TweeterAdminController extends AbstractController
             if(isset($_SESSION['user_login'])) {
                 //$tweeterView = new TweeterView(User::select('follower')->where('followee', 'like', '%'.$_POST['username'].'%'));
                 $tweeterView = new TweeterView(User::select('follower')->where('followee', '=', '9'));
-                $tweeterView->render("followees");
+                $tweeterView->render("followers");
             }
             else
                 Router::executeRoute("login");

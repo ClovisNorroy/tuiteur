@@ -24,11 +24,6 @@ $router->addRoute('home',
     '\tweeterapp\control\TweeterController',
     'viewHome');
 $router->addRoute(
-    'home',
-    '/home',
-    '\tweeterapp\control\TweeterController',
-    'viewHome');
-$router->addRoute(
     'singletweet',
     '/tweet',
     '\tweeterapp\control\TweeterController',
@@ -54,7 +49,8 @@ $router->addRoute(
     'login',
     '/login',
     '\tweeterapp\control\TweeterAdminController',
-    'postTweet');
+    'postTweet',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
 $router->addRoute(
     'checkLogin',
     '/checklogin',
@@ -79,7 +75,14 @@ $router->addRoute(
     'homeLogged',
     '/homeLogged',
     'tweeterapp\control\TweeterController',
-    'viewHomeLogged');
+    'viewHomeLogged',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
+$router->addRoute(
+    'followers',
+    '/followers',
+    'tweeterapp\control\TweeterController',
+    'viewFollowers',
+    TweeterAuthentification::ACCESS_LEVEL_USER);
 
 $router->setDefaultRoute('/home');
 

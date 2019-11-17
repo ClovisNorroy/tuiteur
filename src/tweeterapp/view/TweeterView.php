@@ -59,10 +59,16 @@ EOT;
      
     private function renderUserTweets(){
         $homeHTML="";
-        foreach($this->data as $tweet){
+        foreach($this->data as $tweet) {
             $text = $tweet['text'];
-            $homeHTML.= <<<EOT
-            <p> $text </p>
+            $author = $tweet['authorNickName'];
+            $tweetLink = $this->router->urlFor("/tweet", ['id' => $tweet['id']]);
+            $authorLink = $this->router->urlFor("/author", ['id' => $tweet['author']]);
+            $homeHTML .= <<<EOT
+            <div class = "tweet">
+                <a href="$tweetLink"><div class="tweet-text">$text</div></a>
+                <div class="tweet-author"> <a href="$authorLink">$author</a></div>
+            </div>
             <hr>
 EOT;
         }
@@ -101,7 +107,7 @@ EOT;
     }
 
     protected function renderFollowers(){
-        $htmlFollower = "";
+        $htmlFollower = "<p>Number of followers : ".count($this->data)."</p>";
         foreach($this->data as $follower){
             $htmlFollower.='<div class="follower">'.$follower->username.'</div>';
         }
@@ -130,7 +136,10 @@ EOT;
         $postLink = $this->router->urlFor("/post");
         return <<<EOT
         <div>
-            <a href='$postLink' ><img src="https://enywook.github.io/tuiteur/html/feather-alt-solid.svg" width="128px" height="128px" alt="homeLogged"></a>
+            <a href='$postLink' >
+                <img src="https://enywook.github.io/tuiteur/html/feather-alt-solid.svg" width="128px" height="128px" alt="homeLogged">
+                <p>Write a new Tuit</p>
+            </a>
         </div>
 
 EOT;
@@ -139,13 +148,13 @@ EOT;
     protected function renderTopMenu(){
         $homeLink = $this->router->urlFor("/home");
         if(TweeterAuthentification::isLogged()){
-            //$followingLink = $this->router->urlFor("/following");
+            $followersLink = $this->router->urlFor("/followers");
             $logoutLink = $this->router->urlFor("/logout");
             $homeLoggedLink = $this->router->urlFor("/homeLogged");
             return <<<EOT
                 <div>
                     <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
-                    <a href=""><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
+                    <a href="$followersLink"><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
                     <a href="$logoutLink"><img src="https://enywook.github.io/tuiteur/html/logout.png" alt="logout"></a>
                     <a href="$homeLoggedLink"><img src="https://enywook.github.io/tuiteur/html/themeisle-brands.svg" width="128px" height="128px" alt="homeLogged"></a>
                 </div>
@@ -198,6 +207,6 @@ EOT;
             .$this->renderTopMenu()
             ."<section>".$sectionContent."</section>"
             ."<footer>".$this->renderFooter()."</footer></body>" ;
-        echo $html;
+        return $html;
     }
 }
