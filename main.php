@@ -78,8 +78,8 @@ $router->addRoute(
 $router->addRoute(
     'homeLogged',
     '/homeLogged',
-    'tweeterapp\control\TweeterAdminController',
-    'homeLogged');
+    'tweeterapp\control\TweeterController',
+    'viewHomeLogged');
 
 $router->setDefaultRoute('/home');
 

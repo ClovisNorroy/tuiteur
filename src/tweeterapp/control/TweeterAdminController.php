@@ -33,13 +33,6 @@ class TweeterAdminController extends AbstractController
         }
     }
 
-    public function homeLogged(){
-        if(TweeterAuthentification::isLogged()){
-            $user = User::select('id')->where('username', 'like', '%'.$_SESSION['user_login'].'%');
-
-        }
-    }
-
     public function logout(){
         $auth = new Authentification();
         $auth->logout();

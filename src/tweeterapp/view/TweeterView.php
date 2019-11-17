@@ -34,7 +34,6 @@ class TweeterView extends \mf\view\AbstractView {
     
     private function renderHome(){
         $homeHTML="";
-        $postLink = $this->router->urlFor('/post');
         foreach($this->data as $tweet){
             $text = $tweet['text'];
             $author = $tweet['authorNickName'];
@@ -130,8 +129,8 @@ EOT;
     {
         $postLink = $this->router->urlFor("/post");
         return <<<EOT
-        <div> 
-            <a href='$postLink' >New</a>
+        <div>
+            <a href='$postLink' ><img src="https://enywook.github.io/tuiteur/html/feather-alt-solid.svg" width="128px" height="128px" alt="homeLogged"></a>
         </div>
 
 EOT;
@@ -148,7 +147,7 @@ EOT;
                     <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
                     <a href=""><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
                     <a href="$logoutLink"><img src="https://enywook.github.io/tuiteur/html/logout.png" alt="logout"></a>
-                    <a href="$homeLoggedLink"><img src="https://enywook.github.io/tuiteur/html/themeisle-brands.svg" alt="homeLogged"></a>
+                    <a href="$homeLoggedLink"><img src="https://enywook.github.io/tuiteur/html/themeisle-brands.svg" width="128px" height="128px" alt="homeLogged"></a>
                 </div>
 EOT;
         }else{
@@ -163,33 +162,7 @@ EOT;
 EOT;
         }
     }
-    /*
-    protected function renderHomeLogged(){
-        $homeHTML="";
-        $postLink = $this->router->urlFor('/post');
-        foreach($this->data as $tweet){
-            $text = $tweet['text'];
-            $author = $tweet['authorNickName'];
-            $tweetLink = $this->router->urlFor("/tweet", ['id'=> $tweet['id']]) ;
-            $authorLink = $this->router->urlFor("/author", ['id' => $tweet['author']]) ;
-            $homeHTML.= <<<EOT
-            <div class = "tweet">
-                <div class="tweet-text"><a href="$tweetLink">$text</a></div>
-                <div class="tweet-author"> <a href="$authorLink">$author</a></div>
-            </div>
-            <hr>
-EOT;
-        }
-        if($_SESSION['user_login']){
-            $bottomMenu=$this->renderBottomMenu();
-        }
-        else{
-            $bottomMenu="<p>Signin to write a Tweet !</p>";
-        }
 
-        return $homeHTML.$bottomMenu;
-    }
-*/
     protected function renderBody($selector){
         switch ($selector) {
             case "home":
@@ -214,7 +187,7 @@ EOT;
                 $sectionContent = $this->renderFollowers();
                 break;
             case "homeLogged":
-                $sectionContent = $this->renderHomeLogged();
+                $sectionContent = $this->renderHome();
                 break;
             default:
                 $sectionContent = $this->renderHome();
