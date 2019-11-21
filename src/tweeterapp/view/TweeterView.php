@@ -114,6 +114,20 @@ EOT;
         return $htmlFollower;
     }
 
+    protected function renderInfluence(){
+        $htmlInfluence = "<table><tr><th>Username</th><th>Nbr followers</th></tr>";
+        foreach($this->data as $user){
+            $influenceurLink = $this->router->urlFor("/listesuiveurs");
+            $influenceurLink.="?id=".$user->id;
+            $htmlInfluence.=<<<EOT
+                <tr>
+                    <td><a href="$influenceurLink">$user->username</a></td>
+                    <td>$user->followers</td>
+EOT;
+        }
+        echo $htmlInfluence;
+    }
+
     protected function renderSignup(){
         $actionForm = $this->router->urlFor("/checksignup");
         return <<<EOT
@@ -174,6 +188,7 @@ EOT;
 
     protected function renderBody($selector){
         switch ($selector) {
+            case "homeLogged":
             case "home":
                 $sectionContent = $this->renderHome();
                 break;
@@ -195,8 +210,8 @@ EOT;
             case "followers":
                 $sectionContent = $this->renderFollowers();
                 break;
-            case "homeLogged":
-                $sectionContent = $this->renderHome();
+            case "influence":
+                $sectionContent = $this->renderInfluence();
                 break;
             default:
                 $sectionContent = $this->renderHome();

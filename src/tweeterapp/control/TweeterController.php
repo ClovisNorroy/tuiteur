@@ -92,6 +92,13 @@ class TweeterController extends \mf\control\AbstractController {
         $tweeterView->render("followers");
     }
 
+    public function viewInfluence(){
+        echo 'HEY';
+        $usersOrderedByNbrFollower = User::select()->orderBy("followers", "desc")->get();
+        $tweeterView = new TweeterView($usersOrderedByNbrFollower);
+        $tweeterView->render("influence");
+    }
+
     public function postTweet(){
         $emptyView = new TweeterView("");
         $emptyView->render("postTweet");

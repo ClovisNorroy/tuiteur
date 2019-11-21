@@ -49,8 +49,7 @@ $router->addRoute(
     'login',
     '/login',
     '\tweeterapp\control\TweeterAdminController',
-    'postTweet',
-    TweeterAuthentification::ACCESS_LEVEL_USER);
+    'postTweet');
 $router->addRoute(
     'checkLogin',
     '/checklogin',
@@ -83,7 +82,12 @@ $router->addRoute(
     'tweeterapp\control\TweeterController',
     'viewFollowers',
     TweeterAuthentification::ACCESS_LEVEL_USER);
-
-$router->setDefaultRoute('/home');
+$router->addRoute(
+    'influence',
+    '/influence',
+    'tweeterapp\control\TweeterController',
+    'viewInfluence',
+    TweeterAuthentification::ACCESS_LEVEL_ADMIN);
+$router->setDefaultRoute('/home/');
 
 $router->run();
