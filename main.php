@@ -89,6 +89,12 @@ $router->addRoute(
     'viewInfluence',
     TweeterAuthentification::ACCESS_LEVEL_ADMIN);
 $router->addRoute(
+    'listeSuiveurs',
+    '/listesuiveurs',
+    'tweeterapp\control\TweeterController',
+    'viewFollowers',
+    TweeterAuthentification::ACCESS_LEVEL_ADMIN);
+$router->addRoute(
     'updateCountFollowers',
     '/update',
     'tweeterapp\control\TweeterController',

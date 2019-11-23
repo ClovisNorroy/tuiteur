@@ -3,9 +3,6 @@
 
 namespace mf\utils;
 
-
-use mf\router\AbstractRouter;
-
 class HttpRequest extends  AbstractHttpRequest
 {
     public function __construct()

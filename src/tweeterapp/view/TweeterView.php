@@ -48,7 +48,7 @@ class TweeterView extends \mf\view\AbstractView {
             <hr>
 EOT;
         }
-        if($_SESSION['user_login']){
+        if(isset($_SESSION['user_login'])){
             $bottomMenu=$this->renderBottomMenu();
         }
         else{
@@ -108,7 +108,10 @@ EOT;
     }
 
     protected function renderFollowers(){
-        $htmlFollower = "<p>Number of followers : ".count($this->data)."</p>";
+        $htmlFollower="";
+        if(isset($_GET['userid']))
+            $htmlFollower.="<h4> Followers for : ".$_SESSION["user_login"]."</h4>";
+        $htmlFollower .= "<p>Number of followers : ".count($this->data)."</p>";
         foreach($this->data as $follower){
             $htmlFollower.='<div class="follower">'.$follower->username.'</div>';
         }
@@ -119,7 +122,7 @@ EOT;
         $htmlInfluence = "<table><tr><th>Username</th><th>Nbr followers</th></tr>";
         foreach($this->data as $user){
             $influenceurLink = $this->router->urlFor("/listesuiveurs");
-            $influenceurLink.="?id=".$user->id;
+            $influenceurLink.="?userid=".$user->id;
             $htmlInfluence.=<<<EOT
                 <tr>
                     <td><a href="$influenceurLink">$user->username</a></td>
@@ -182,7 +185,7 @@ EOT;
             
 EOT;
             if($isAdmin){
-                return $htmlTopMenu.="<a href='$influenceLink'><img src='https://enywook.github.io/tuiteur/html/themeisle-brands.svg' width='128px' height='128px' alt='influence'></a>"."</div>";
+                return $htmlTopMenu.="<a href='$influenceLink'><img src='https://enywook.github.io/tuiteur/html/ruler-solid.svg' width='128px' height='128px' alt='influence'></a>"."</div>";
             }
             return $htmlTopMenu.="</div>";
         }else{

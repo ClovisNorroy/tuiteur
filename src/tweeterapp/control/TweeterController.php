@@ -86,7 +86,10 @@ class TweeterController extends \mf\control\AbstractController {
     }
 
     public function viewFollowers(){
+        if(isset($_GET['id']))
         $user = User::select()->where('id', '=', $_GET["id"])->first();
+        if(isset($_GET['userid']))
+            $user = User::find($_GET['userid']);
         $followers = $user->followedBy()->get();
         $tweeterView = new TweeterView($followers);
         $tweeterView->render("followers");
@@ -109,5 +112,15 @@ class TweeterController extends \mf\control\AbstractController {
         $tweetToSend->author = $_SESSION['user_login'];
         $tweetToSend->save();
         $this->viewHome();
+    }
+
+    public function updateCountFollowers(){
+        $users = User::all();
+        foreach ($users as $user){
+            $userFollowers = $user->followedBy()->get();
+            $user->followers = sizeof($userFollowers);
+            $user->save();
+        }
+        echo "Followers count updated !";
     }
 }

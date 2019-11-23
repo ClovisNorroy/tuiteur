@@ -4,7 +4,6 @@
 namespace mf\router;
 
 
-use Illuminate\Support\Facades\Auth;
 use mf\auth\Authentification;
 
 class Router extends AbstractRouter
@@ -15,7 +14,6 @@ class Router extends AbstractRouter
     public function __construct()
     {
         parent::__construct();
-        self::$routes['/home/']=['\tweeterapp\control\TweeterController', 'viewHome'];
     }
 
     public function run()
@@ -28,7 +26,10 @@ class Router extends AbstractRouter
         $methodName = self::$routes[$route][1];
         // Si un chemin valid a été demandé, créer instance et méthode concerné
         // à la place de celle par défaut
-        $accessReq =self::$routes[$this->http_req->path_info][2];
+        if(isset(self::$routes[$this->http_req->path_info][2]))
+            $accessReq =self::$routes[$this->http_req->path_info][2];
+        else
+            $accessReq = -999;
         if(isset(self::$routes[$this->http_req->path_info]) && $auth->checkAccessRight($accessReq)){
             $controllerName = self::$routes[$this->http_req->path_info][0];
             $methodName = self::$routes[$this->http_req->path_info][1];
