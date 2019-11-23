@@ -54,7 +54,7 @@ class TweeterController extends \mf\control\AbstractController {
     }
 
     public function viewHomeLogged(){
-        $user = User::select()->where('id', '=', 12)->first();
+        $user = User::select()->where('id', '=', $_GET["id"])->first();
         $followers = $user->followedBy()->get();
         $followerArray = [];
         foreach($followers as $follower){
@@ -86,14 +86,13 @@ class TweeterController extends \mf\control\AbstractController {
     }
 
     public function viewFollowers(){
-        $user = User::select()->where('id', '=', 12)->first();
+        $user = User::select()->where('id', '=', $_GET["id"])->first();
         $followers = $user->followedBy()->get();
         $tweeterView = new TweeterView($followers);
         $tweeterView->render("followers");
     }
 
     public function viewInfluence(){
-        echo 'HEY';
         $usersOrderedByNbrFollower = User::select()->orderBy("followers", "desc")->get();
         $tweeterView = new TweeterView($usersOrderedByNbrFollower);
         $tweeterView->render("influence");

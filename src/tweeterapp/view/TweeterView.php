@@ -7,6 +7,7 @@ use mf\router\Router;
 use tweeterapp\auth\TweeterAuthentification;
 use tweeterapp\control\TweeterAdminController;
 use tweeterapp\control\TweeterController;
+use tweeterapp\model\User;
 
 class TweeterView extends \mf\view\AbstractView {
     private $router;
@@ -125,7 +126,7 @@ EOT;
                     <td>$user->followers</td>
 EOT;
         }
-        echo $htmlInfluence;
+        return $htmlInfluence.="</tr></table>";
     }
 
     protected function renderSignup(){
@@ -162,17 +163,28 @@ EOT;
     protected function renderTopMenu(){
         $homeLink = $this->router->urlFor("/home");
         if(TweeterAuthentification::isLogged()){
+            $userID = User::select("id")->where("username", "like", "%".$_SESSION["user_login"]."%")->first();
             $followersLink = $this->router->urlFor("/followers");
+            $followersLink.="?id=".$userID->id;
             $logoutLink = $this->router->urlFor("/logout");
             $homeLoggedLink = $this->router->urlFor("/homeLogged");
-            return <<<EOT
-                <div>
-                    <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
-                    <a href="$followersLink"><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
-                    <a href="$logoutLink"><img src="https://enywook.github.io/tuiteur/html/logout.png" alt="logout"></a>
-                    <a href="$homeLoggedLink"><img src="https://enywook.github.io/tuiteur/html/themeisle-brands.svg" width="128px" height="128px" alt="homeLogged"></a>
-                </div>
+            $homeLoggedLink.="?id=".$userID->id;
+            $isAdmin = $_SESSION["access_level"]>=TweeterAuthentification::ACCESS_LEVEL_ADMIN;
+            if($isAdmin){
+                $influenceLink = $this->router->urlFor("/influence");
+            }
+            $htmlTopMenu = <<<EOT
+            <div>
+                <a href="$homeLink"><img src="https://enywook.github.io/tuiteur/html/home.png" alt="home"></a>
+                <a href="$followersLink"><img src="https://enywook.github.io/tuiteur/html/followees.png" alt="followees"></a>
+                <a href="$logoutLink"><img src="https://enywook.github.io/tuiteur/html/logout.png" alt="logout"></a>
+                <a href="$homeLoggedLink"><img src="https://enywook.github.io/tuiteur/html/themeisle-brands.svg" width="128px" height="128px" alt="homeLogged"></a>
+            
 EOT;
+            if($isAdmin){
+                return $htmlTopMenu.="<a href='$influenceLink'><img src='https://enywook.github.io/tuiteur/html/themeisle-brands.svg' width='128px' height='128px' alt='influence'></a>"."</div>";
+            }
+            return $htmlTopMenu.="</div>";
         }else{
             $loginLink = $this->router->urlFor("/login");
             $signupLink = $this->router->urlFor("/signup");

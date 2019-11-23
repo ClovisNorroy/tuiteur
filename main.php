@@ -20,7 +20,7 @@ $db->setAsGlobal();
 $db->bootEloquent();
 
 $router->addRoute('home',
-    '/home/',
+    '/home',
     '\tweeterapp\control\TweeterController',
     'viewHome');
 $router->addRoute(
@@ -88,6 +88,13 @@ $router->addRoute(
     'tweeterapp\control\TweeterController',
     'viewInfluence',
     TweeterAuthentification::ACCESS_LEVEL_ADMIN);
-$router->setDefaultRoute('/home/');
+$router->addRoute(
+    'updateCountFollowers',
+    '/update',
+    'tweeterapp\control\TweeterController',
+    "updateCountFollowers",
+    TweeterAuthentification::ACCESS_LEVEL_ADMIN);
+
+$router->setDefaultRoute('/home');
 
 $router->run();
