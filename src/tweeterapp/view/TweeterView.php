@@ -109,7 +109,11 @@ EOT;
 
     protected function renderFollowers(){
         $htmlFollower="";
-        if(isset($_GET['userid']))
+        if(isset($_GET['userid'])){
+            $username=User::select("username")->where("id", "=", $_GET['userid'])->first();
+            $htmlFollower.="<h4> Followers for : ".$username->username."</h4>";
+        }
+        else
             $htmlFollower.="<h4> Followers for : ".$_SESSION["user_login"]."</h4>";
         $htmlFollower .= "<p>Number of followers : ".count($this->data)."</p>";
         foreach($this->data as $follower){
@@ -127,6 +131,21 @@ EOT;
                 <tr>
                     <td><a href="$influenceurLink">$user->username</a></td>
                     <td>$user->followers</td>
+EOT;
+        }
+        return $htmlInfluence.="</tr></table>";
+    }
+
+    protected function renderSphere(){
+        $htmlInfluence = "<table><tr><th>Username</th><th>Taille Sphere</th></tr>";
+        foreach($this->data as $userID => $userSphere){
+            $user = User::find($userID);
+            $influenceurLink = $this->router->urlFor("/listesuiveurs");
+            $influenceurLink.="?userid=".$userID;
+            $htmlInfluence.=<<<EOT
+                <tr>
+                    <td><a href="$influenceurLink">$user->username</a></td>
+                    <td>$userSphere</td>
 EOT;
         }
         return $htmlInfluence.="</tr></table>";
@@ -175,6 +194,7 @@ EOT;
             $isAdmin = $_SESSION["access_level"]>=TweeterAuthentification::ACCESS_LEVEL_ADMIN;
             if($isAdmin){
                 $influenceLink = $this->router->urlFor("/influence");
+                $sphereLink = $this->router->urlFor("/sphere");
             }
             $htmlTopMenu = <<<EOT
             <div>
@@ -185,7 +205,9 @@ EOT;
             
 EOT;
             if($isAdmin){
-                return $htmlTopMenu.="<a href='$influenceLink'><img src='https://enywook.github.io/tuiteur/html/ruler-solid.svg' width='128px' height='128px' alt='influence'></a>"."</div>";
+                $htmlTopMenu.="<a href='$influenceLink'><img src='https://enywook.github.io/tuiteur/html/ruler-solid.svg' width='128px' height='128px' alt='influence'></a>"."</div>";
+                return $htmlTopMenu.="<a href='$sphereLink'><img src='https://enywook.github.io/tuiteur/html/sitemap-solid.svg' width='128px' height='128px' alt='influence'></a>"."</div>";
+
             }
             return $htmlTopMenu.="</div>";
         }else{
@@ -227,6 +249,9 @@ EOT;
                 break;
             case "influence":
                 $sectionContent = $this->renderInfluence();
+                break;
+            case "sphere":
+                $sectionContent = $this->renderSphere();
                 break;
             default:
                 $sectionContent = $this->renderHome();

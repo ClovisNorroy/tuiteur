@@ -100,6 +100,12 @@ $router->addRoute(
     'tweeterapp\control\TweeterController',
     "updateCountFollowers",
     TweeterAuthentification::ACCESS_LEVEL_ADMIN);
+$router->addRoute(
+    'shpere',
+    '/sphere',
+    'tweeterapp\control\TweeterController',
+    "sphereInfluence",
+    TweeterAuthentification::ACCESS_LEVEL_ADMIN);
 
 $router->setDefaultRoute('/home');
 

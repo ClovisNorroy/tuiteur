@@ -114,6 +114,37 @@ class TweeterController extends \mf\control\AbstractController {
         $this->viewHome();
     }
 
+    public function sphereInfluence(){
+        $users = User::all();
+        $userToSphere = [];
+        foreach ($users as $user){
+            $queue = []; // users to check
+            $done = []; // users already checked
+            array_push($done, $user->id);
+            $followers = $user->followedBy()->get();
+            foreach($followers as $foo){
+                array_push($queue, $foo->id);
+                array_push($done, $foo->id);
+            }
+
+
+            while(sizeof($queue)>0){
+                $userToCheck = User::find(array_shift($queue));
+                $followersToCheck = $userToCheck->followedBy()->get();
+                foreach($followersToCheck as $userToCheck){
+                    if(!in_array($userToCheck->id, $done)){ //si user pas déjà check
+                        array_push($queue, $userToCheck->id);// ajout dans queue
+                        array_push($done, $userToCheck->id);
+                    }
+                }
+            }
+        $userToSphere[$user->id]=sizeof($done)-1; // -1 pour enlever pour enlever le follow sur soi même
+        }
+        $tweeterView = new TweeterView($userToSphere);
+        $tweeterView->render("sphere");
+    }
+
+
     public function updateCountFollowers(){
         $users = User::all();
         foreach ($users as $user){
