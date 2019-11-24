@@ -107,9 +107,10 @@ class TweeterController extends \mf\control\AbstractController {
     }
 //TODO Filtrer
     public function sendTweet(){
+        $user = User::select("id")->where("username", "like", "%".$_SESSION['user_login']."%")->first();
         $tweetToSend = new Tweet;
-        $tweetToSend->text = $_POST['text'];
-        $tweetToSend->author = $_SESSION['user_login'];
+        $tweetToSend->text = addslashes($_POST['text']);
+        $tweetToSend->author = $user->id;
         $tweetToSend->save();
         $this->viewHome();
     }
