@@ -62,7 +62,7 @@ class TweeterAuthentification extends \mf\auth\Authentification {
             $newUser->username = $username;
             $newUser->password = password_hash($pass, PASSWORD_DEFAULT);
             $newUser->level = $level;
-            $newUser->followers = 0 ; // Followers = nb Followers ?
+            $newUser->followers = 0 ;
             $newUser->save();
         }
     }

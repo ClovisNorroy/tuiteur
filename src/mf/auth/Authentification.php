@@ -4,6 +4,7 @@
 namespace mf\auth;
 
 
+use mf\auth\exception\AuthentificationException;
 use mf\router\Router;
 use mysql_xdevapi\Exception;
 use tweeterapp\view\TweeterView;
@@ -144,7 +145,7 @@ class Authentification extends AbstractAuthentification
             Router::executeRoute("home");
         }
         else
-            throw new AuthentificationException("Erreur d'authentification");
+            throw new \Exception("Erreur d'authentification");
     }
 
     protected function hashPassword($password)
@@ -154,7 +155,6 @@ class Authentification extends AbstractAuthentification
 
     protected function verifyPassword($password, $hash)
     {
-        return true;
-        //return password_verify($password, $hash);
+        return password_verify($password, $hash);
     }
 }

@@ -52,7 +52,7 @@ class TweeterAdminController extends AbstractController
             $tweeterAuth = new TweeterAuthentification();
                 $tweeterAuth->createUser(
                     $_POST['username'],
-                    password_hash($_POST['password'], PASSWORD_DEFAULT),
+                    $_POST['password'],
                     $_POST['fullname']);
             Router::executeRoute("home");
         }else
